@@ -1,3 +1,52 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, logout, authenticate
+from .models import User, Critic
+from .forms import CriticForm, RegisterForm, LoginForm
 
-# Create your views here.
+
+def register(request):
+    if request.user.is_authenticated:
+        return redirect('logout')
+    else:
+        if request.method == 'POST':
+            form = RegisterForm(request.POST)
+            if form.is_valid():
+                user = User.objects.create_user(
+                    username=form.cleaned_data['username'],
+                    email=form.cleaned_data['email'],
+                    password=form.cleaned_data['password'],
+                )
+                login(request, user)
+                return redirect('all-c')
+            else:
+                return render(request, 'new.html', {'form':form})
+        else:
+            return render(request, 'new.html', {'form':RegisterForm()})
+
+def user_login(request):
+    if request.user.is_authenticated:
+        return redirect('logout')
+    else:
+        if request.method == 'POST':
+            form = LoginForm(request.POST)
+            if form.is_valid():
+                user = authenticate(
+                    username=form.cleaned_data['username'],
+                    password=form.cleaned_data['password']
+                )
+                if user:
+                    login(request, user)
+                    return redirect('all-c')
+                else:
+                    return render(request, 'create.html', {'form':form})
+
+            else:
+                return render(request, 'create.html', {'form':form})
+        else:
+            return render(request, 'create.html', {'form':LoginForm()})
+
+def userlogout(request):
+    logout(request)
+    return redirect('login')
+                                                  
+        
