@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from .models import User, Critic
 from .forms import CriticForm, RegisterForm, LoginForm
-
+from django.contrib import messages
 
 def register(request):
     if request.user.is_authenticated:
+        messages.error(request,'You have already registered','error')
         return redirect('logout')
     else:
         if request.method == 'POST':
@@ -16,6 +17,7 @@ def register(request):
                     email=form.cleaned_data['email'],
                     password=form.cleaned_data['password'],
                 )
+                messages.success(request,'Your information has been saved successfuly','success')
                 login(request, user)
                 return redirect('all-c')
             else:
@@ -34,6 +36,7 @@ def user_login(request):
                     username=form.cleaned_data['username'],
                     password=form.cleaned_data['password']
                 )
+                messages.success(request,'Your information has been saved successfully','success')
                 if user:
                     login(request, user)
                     return redirect('all-c')
@@ -47,6 +50,7 @@ def user_login(request):
 
 def userlogout(request):
     logout(request)
+    messages.success(request,'logout successfully','success')
     return redirect('login')
 
 def new(request):
@@ -60,7 +64,8 @@ def new(request):
                     text=form.cleaned_data['text'],
                     creator=user
                 )
-                return redirect('read', id=c.id)
+                messages.success(request,'Your review has been successfully registered','success')
+                return redirect('login')
             else:
                 return render(request, 'new.html', {'form':form})
         else:
