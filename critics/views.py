@@ -38,15 +38,34 @@ def user_login(request):
                     login(request, user)
                     return redirect('all-c')
                 else:
-                    return render(request, 'create.html', {'form':form})
+                    return render(request, 'new.html', {'form':form})
 
             else:
-                return render(request, 'create.html', {'form':form})
+                return render(request, 'new.html', {'form':form})
         else:
-            return render(request, 'create.html', {'form':LoginForm()})
+            return render(request, 'new.html', {'form':LoginForm()})
 
 def userlogout(request):
     logout(request)
     return redirect('login')
+
+def new(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = CriticForm(request.POST)
+            if form.is_valid():
+                user = User.objects.get(id=request.user.id)
+                c = Critic.objects.create(
+                    title=form.cleaned_data['title'],
+                    text=form.cleaned_data['text'],
+                    creator=user
+                )
+                return redirect('read', id=c.id)
+            else:
+                return render(request, 'new.html', {'form':form})
+        else:
+            return render(request, 'new.html', {'form':CriticForm()})
+    else:
+        return redirect('login')
                                                   
         
