@@ -34,7 +34,6 @@ def userlogin(request):
             form = LoginForm(request.POST)
             if form.is_valid():
                 user = authenticate(
-                    request,
                     username=form.cleaned_data['username'],
                     password=form.cleaned_data['password']
                 )
