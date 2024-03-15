@@ -25,7 +25,7 @@ def register(request):
         else:
             return render(request, 'new.html', {'form':RegisterForm()})
 
-def user_login(request):
+def userlogin(request):
     if request.user.is_authenticated:
         return redirect('logout')
     else:
