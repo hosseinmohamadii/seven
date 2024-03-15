@@ -8,7 +8,7 @@ class CriticForm(forms.ModelForm):
     
 class RegisterForm(forms.Form):
     username = forms.CharField(max_length=255)
-    password = forms.EmailField(widget=forms.PasswordInput)
+    password = forms.CharField(widget=forms.PasswordInput)
     email = forms.EmailField()
 
 class LoginForm(forms.Form):
