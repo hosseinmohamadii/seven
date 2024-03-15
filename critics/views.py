@@ -36,7 +36,7 @@ def user_login(request):
                     username=form.cleaned_data['username'],
                     password=form.cleaned_data['password']
                 )
-                messages.success(request,'Your information has been saved successfully','success')
+                messages.success(request,'Your information has been saved successfully','success1')
                 if user:
                     login(request, user)
                     return redirect('all-c')
@@ -50,7 +50,7 @@ def user_login(request):
 
 def userlogout(request):
     logout(request)
-    messages.success(request,'logout successfully','success')
+    messages.success(request,'logout successfully','success2')
     return redirect('login')
 
 def new(request):
@@ -64,7 +64,7 @@ def new(request):
                     text=form.cleaned_data['text'],
                     creator=user
                 )
-                messages.success(request,'Your review has been successfully registered','success')
+                messages.success(request,'Your review has been successfully registered','success3')
                 return redirect('login')
             else:
                 return render(request, 'new.html', {'form':form})
