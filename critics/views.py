@@ -19,7 +19,7 @@ def register(request):
                 )
                 messages.success(request,'Your information has been saved successfuly','success')
                 login(request, user)
-                return redirect('all-c')
+                return redirect('login')
             else:
                 messages.error(request,'Your form is not valid','error')
                 return render(request, 'create.html', {'form':form})
@@ -34,6 +34,7 @@ def userlogin(request):
             form = LoginForm(request.POST)
             if form.is_valid():
                 user = authenticate(
+                    request,
                     username=form.cleaned_data['username'],
                     password=form.cleaned_data['password']
                 )
