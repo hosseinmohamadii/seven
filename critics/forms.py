@@ -6,12 +6,11 @@ class CriticForm(forms.ModelForm):
         model = Critic
         fields = ['title', 'text']
     
-class RegisterForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'password']
+class RegisterForm(forms.Form):
+    username = forms.CharField(max_length=255)
+    password = forms.EmailField(widget=forms.PasswordInput)
+    email = forms.EmailField()
 
-class LoginForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['username', 'password']
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=255)
+    password = forms.CharField(widget=forms.PasswordInput)
