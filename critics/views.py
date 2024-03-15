@@ -21,9 +21,9 @@ def register(request):
                 login(request, user)
                 return redirect('all-c')
             else:
-                return render(request, 'new.html', {'form':form})
+                return render(request, 'create.html', {'form':form})
         else:
-            return render(request, 'new.html', {'form':RegisterForm()})
+            return render(request, 'create.html', {'form':RegisterForm()})
 
 def userlogin(request):
     if request.user.is_authenticated:
@@ -36,21 +36,21 @@ def userlogin(request):
                     username=form.cleaned_data['username'],
                     password=form.cleaned_data['password']
                 )
-                messages.success(request,'Your information has been saved successfully','success1')
+                messages.success(request,'Your information has been saved successfully','success')
                 if user:
                     login(request, user)
                     return redirect('all-c')
                 else:
-                    return render(request, 'new.html', {'form':form})
+                    return render(request, 'create.html', {'form':form})
 
             else:
-                return render(request, 'new.html', {'form':form})
+                return render(request, 'create.html', {'form':form})
         else:
-            return render(request, 'new.html', {'form':LoginForm()})
+            return render(request, 'create.html', {'form':LoginForm()})
 
 def userlogout(request):
     logout(request)
-    messages.success(request,'logout successfully','success2')
+    messages.success(request,'logout successfully','success')
     return redirect('login')
 
 def new(request):
@@ -64,13 +64,17 @@ def new(request):
                     text=form.cleaned_data['text'],
                     creator=user
                 )
-                messages.success(request,'Your review has been successfully registered','success3')
+                messages.success(request,'Your review has been successfully registered','success')
                 return redirect('login')
             else:
-                return render(request, 'new.html', {'form':form})
+                return render(request, 'create.html', {'form':form})
         else:
-            return render(request, 'new.html', {'form':CriticForm()})
+            return render(request, 'create.html', {'form':CriticForm()})
     else:
         return redirect('login')
+    
+def listc(request):
+    cqs = Critic.objects.all()
+    return render(request, 'list.html', {'objs':cqs})
                                                   
         
