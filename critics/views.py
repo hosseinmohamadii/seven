@@ -21,6 +21,7 @@ def register(request):
                 login(request, user)
                 return redirect('all-c')
             else:
+                messages.error(request,'Your form is not valid','error')
                 return render(request, 'create.html', {'form':form})
         else:
             return render(request, 'create.html', {'form':RegisterForm()})
@@ -44,6 +45,7 @@ def userlogin(request):
                     return render(request, 'create.html', {'form':form})
 
             else:
+                messages.error(request,'Your form is not valid','error')
                 return render(request, 'create.html', {'form':form})
         else:
             messages.error(request,'signin first','error')
@@ -66,13 +68,24 @@ def new(request):
                     creator=user
                 )
                 messages.success(request,'Your review has been successfully registered','success')
-                return redirect('login')
+                return redirect('read', id=c.id)
             else:
+                messages.error(request,'Your form is not valid','error')
                 return render(request, 'create.html', {'form':form})
         else:
+            messages.error(request,'enter review','error')
             return render(request, 'create.html', {'form':CriticForm()})
     else:
+        messages.error(request,'Please authenticate first','error')
         return redirect('login')
+
+def readc(request, id):
+    c = Critic.objects.get(id=id)
+    if request.user.id==c.creator.id:
+        return render(request, 'read.html', {'object':c})
+    else:
+        messages(request,'invalid user','error')
+        return redirect('new')
     
 def listc(request):
     cqs = Critic.objects.all()
