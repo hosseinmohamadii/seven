@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import new, register, userlogin, userlogout,listc,readc
+from .views import new, register, userlogin, userlogout,readc
 
 urlpatterns = [
     path('new/', new, name='new'),
