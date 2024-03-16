@@ -40,7 +40,7 @@ def userlogin(request):
                 messages.success(request,'Your information has been saved successfully','success')
                 if user:
                     login(request, user)
-                    return redirect('all-c')
+                    return redirect('new')
                 else:
                     return render(request, 'create.html', {'form':form})
 
@@ -87,8 +87,4 @@ def readc(request, id):
         messages(request,'invalid user','error')
         return redirect('new')
     
-def listc(request):
-    cqs = Critic.objects.all()
-    return render(request, 'list.html', {'objs':cqs})
-                                                  
         
